@@ -40,10 +40,9 @@ export function Toast({ open, message }: ToastState) {
         "transition-opacity duration-200",
       ].join(" ")}
     >
-      <div className="rounded-full bg-zinc-900/90 px-4 py-2 text-sm font-medium text-white shadow-lg backdrop-blur">
+      <div className="rounded-xl border border-white/10 bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow-sm backdrop-blur dark:border-zinc-200 dark:bg-zinc-50 dark:text-zinc-900">
         {message}
       </div>
     </div>
   );
 }
-

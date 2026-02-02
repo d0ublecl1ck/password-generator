@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { Hash, Lightbulb, Shuffle } from "lucide-react";
 import {
   generateMemorablePassword,
   generatePin,
@@ -17,48 +18,6 @@ function clampInt(value: number, min: number, max: number) {
   return v;
 }
 
-function IconShuffle() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
-      <path
-        d="M16 3h5v5m-6.5 6.5L21 8M3 6h5c3 0 5 2 7 4l2 2c2 2 4 4 7 4h-3M16 21h5v-5m-6.5-6.5L21 16M3 18h5c3 0 5-2 7-4"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconBulb() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
-      <path
-        d="M9 18h6m-5 3h4M8 11a4 4 0 1 1 8 0c0 1.2-.6 2.3-1.5 3.1-.6.5-1.1 1.2-1.2 1.9H11c-.1-.7-.6-1.4-1.2-1.9C8.6 13.3 8 12.2 8 11Z"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconHash() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
-      <path
-        d="M10 3 8 21M16 3l-2 18M4 8h17M3 16h17"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function SegmentedControl({
   value,
   onChange,
@@ -67,13 +26,17 @@ function SegmentedControl({
   onChange: (next: Mode) => void;
 }) {
   const items: Array<{ value: Mode; label: string; icon: React.ReactNode }> = [
-    { value: "random", label: "随机", icon: <IconShuffle /> },
-    { value: "memorable", label: "容易记住", icon: <IconBulb /> },
-    { value: "pin", label: "PIN", icon: <IconHash /> },
+    { value: "random", label: "随机", icon: <Shuffle className="h-4 w-4" /> },
+    {
+      value: "memorable",
+      label: "容易记住",
+      icon: <Lightbulb className="h-4 w-4" />,
+    },
+    { value: "pin", label: "PIN", icon: <Hash className="h-4 w-4" /> },
   ];
 
   return (
-    <div className="rounded-xl bg-zinc-100 p-2">
+    <div className="rounded-xl border border-zinc-200 bg-zinc-100 p-1 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="grid grid-cols-3 gap-2">
         {items.map((item) => {
           const active = item.value === value;
@@ -83,10 +46,10 @@ function SegmentedControl({
               type="button"
               onClick={() => onChange(item.value)}
               className={[
-                "flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition",
+                "flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "bg-white text-zinc-900 shadow-sm"
-                  : "text-zinc-600 hover:bg-white/60 hover:text-zinc-900",
+                  ? "bg-white text-zinc-900 shadow-sm dark:bg-black dark:text-zinc-50"
+                  : "text-zinc-600 hover:bg-white/70 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-black/40 dark:hover:text-zinc-50",
               ].join(" ")}
               aria-pressed={active}
             >
@@ -109,22 +72,26 @@ function Switch({
   onCheckedChange: (checked: boolean) => void;
   label: string;
 }) {
+  const state = checked ? "checked" : "unchecked";
   return (
     <label className="flex items-center gap-3">
-      <span className="text-sm text-zinc-500">{label}</span>
+      <span className="text-sm text-zinc-600 dark:text-zinc-400">{label}</span>
       <button
         type="button"
         role="switch"
         aria-checked={checked}
         onClick={() => onCheckedChange(!checked)}
+        data-state={state}
         className={[
-          "relative h-7 w-12 rounded-full transition-colors",
-          checked ? "bg-blue-600" : "bg-zinc-400",
+          "relative h-6 w-11 rounded-full transition-colors",
+          "bg-zinc-200 dark:bg-zinc-800",
+          "data-[state=checked]:bg-zinc-900 dark:data-[state=checked]:bg-zinc-50",
         ].join(" ")}
       >
         <span
           className={[
-            "absolute top-1 left-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform",
+            "absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform",
+            "dark:bg-black",
             checked ? "translate-x-5" : "translate-x-0",
           ].join(" ")}
         />
@@ -149,7 +116,7 @@ function RangeRow({
   const pct = ((value - min) / (max - min)) * 100;
   const trackStyle = useMemo(() => {
     return {
-      background: `linear-gradient(to right, rgb(37 99 235) ${pct}%, rgb(161 161 170) ${pct}%)`,
+      background: `linear-gradient(to right, rgb(24 24 27) ${pct}%, rgb(212 212 216) ${pct}%)`,
     } as const;
   }, [pct]);
 
@@ -166,10 +133,10 @@ function RangeRow({
         max={max}
         value={value}
         onChange={(e) => onChange(clampInt(Number(e.target.value), min, max))}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full"
+        className="h-2 w-full cursor-pointer appearance-none rounded-full dark:opacity-90"
         style={trackStyle}
       />
-      <div className="flex h-10 items-center justify-center rounded-xl border border-zinc-200 bg-white text-sm font-semibold text-zinc-700">
+      <div className="flex h-10 items-center justify-center rounded-xl border border-zinc-200 bg-white text-sm font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-black dark:text-zinc-200">
         {value}
       </div>
     </div>
@@ -242,23 +209,33 @@ export function PasswordGenerator() {
 
   const rangeConfig =
     mode === "random"
-      ? { label: "字符", min: 8, max: 100, value: randomLength, set: setRandomLength }
+      ? {
+          label: "字符",
+          min: 8,
+          max: 100,
+          value: randomLength,
+          set: setRandomLength,
+        }
       : mode === "memorable"
         ? { label: "单词", min: 3, max: 15, value: wordCount, set: setWordCount }
         : { label: "位数", min: 3, max: 12, value: pinLength, set: setPinLength };
 
   return (
     <>
-      <div className="w-full max-w-xl rounded-[28px] bg-white p-8 shadow-[0_24px_80px_rgba(0,0,0,0.12)]">
-        <div className="space-y-5">
+      <div className="w-full max-w-xl rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-black">
+        <div className="space-y-6">
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-zinc-900">选择密码类型</h2>
+            <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              选择密码类型
+            </h2>
             <SegmentedControl value={mode} onChange={setMode} />
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-base font-semibold text-zinc-900">自定义新密码</h3>
-            <div className="h-px w-full bg-zinc-200" />
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
+              自定义新密码
+            </h3>
+            <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
 
             <RangeRow
               label={rangeConfig.label}
@@ -300,16 +277,16 @@ export function PasswordGenerator() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-base font-semibold text-zinc-900">生成密码</h3>
-            <div className="h-px w-full bg-zinc-200" />
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
+              生成密码
+            </h3>
+            <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
 
-            <div className="rounded-xl border border-zinc-200 bg-white px-6 py-8 text-center">
+            <div className="rounded-xl border border-zinc-200 bg-white px-6 py-8 text-center dark:border-zinc-800 dark:bg-black">
               <div
                 className={[
-                  "mx-auto max-w-full break-words text-xl font-semibold tracking-wide",
-                  mode === "random" || mode === "pin"
-                    ? "text-blue-600"
-                    : "text-zinc-900",
+                  "mx-auto max-w-full break-words font-mono text-xl font-semibold tracking-wide",
+                  "text-zinc-900 dark:text-zinc-50",
                 ].join(" ")}
               >
                 {value}
@@ -319,7 +296,7 @@ export function PasswordGenerator() {
             <div className="grid grid-cols-2 gap-4 pt-2">
               <button
                 type="button"
-                className="h-12 rounded-xl bg-blue-600 px-6 text-base font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="h-12 rounded-xl bg-zinc-900 px-6 text-base font-semibold text-white shadow-sm hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-600 dark:focus:ring-offset-black"
                 onClick={async () => {
                   try {
                     await copyToClipboard(value);
@@ -333,7 +310,7 @@ export function PasswordGenerator() {
               </button>
               <button
                 type="button"
-                className="h-12 rounded-xl border-2 border-blue-600 bg-white px-6 text-base font-semibold text-blue-600 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="h-12 rounded-xl border border-zinc-200 bg-white px-6 text-base font-semibold text-zinc-900 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:border-zinc-800 dark:bg-black dark:text-zinc-50 dark:hover:bg-zinc-900 dark:focus:ring-zinc-600 dark:focus:ring-offset-black"
                 onClick={regenerate}
               >
                 刷新密码
