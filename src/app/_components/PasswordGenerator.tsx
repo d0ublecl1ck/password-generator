@@ -18,6 +18,9 @@ function clampInt(value: number, min: number, max: number) {
   return v;
 }
 
+const pressableBase =
+  "transform-gpu will-change-transform transition-[transform,box-shadow,background-color,color,border-color] duration-150 ease-out active:translate-y-px active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none";
+
 function SegmentedControl({
   value,
   onChange,
@@ -46,7 +49,9 @@ function SegmentedControl({
               type="button"
               onClick={() => onChange(item.value)}
               className={[
-                "flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium",
+                pressableBase,
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-600 dark:focus-visible:ring-offset-black",
                 active
                   ? "bg-white text-zinc-900 shadow-sm dark:bg-black dark:text-zinc-50"
                   : "text-zinc-600 hover:bg-white/70 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-black/40 dark:hover:text-zinc-50",
@@ -83,14 +88,16 @@ function Switch({
         onClick={() => onCheckedChange(!checked)}
         data-state={state}
         className={[
-          "relative h-6 w-11 rounded-full transition-colors",
+          "relative h-6 w-11 rounded-full",
+          pressableBase,
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-600 dark:focus-visible:ring-offset-black",
           "bg-zinc-200 dark:bg-zinc-800",
           "data-[state=checked]:bg-zinc-900 dark:data-[state=checked]:bg-zinc-50",
         ].join(" ")}
       >
         <span
           className={[
-            "absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform",
+            "absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ease-out motion-reduce:transition-none",
             "dark:bg-black",
             checked ? "translate-x-5" : "translate-x-0",
           ].join(" ")}
@@ -296,7 +303,13 @@ export function PasswordGenerator() {
             <div className="grid grid-cols-2 gap-4 pt-2">
               <button
                 type="button"
-                className="h-12 rounded-xl bg-zinc-900 px-6 text-base font-semibold text-white shadow-sm hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-600 dark:focus:ring-offset-black"
+                className={[
+                  "h-12 rounded-xl bg-zinc-900 px-6 text-base font-semibold text-white shadow-sm",
+                  pressableBase,
+                  "hover:bg-zinc-800 hover:shadow-md active:shadow-sm",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-600 dark:focus-visible:ring-offset-black",
+                  "dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200",
+                ].join(" ")}
                 onClick={async () => {
                   try {
                     await copyToClipboard(value);
@@ -310,7 +323,13 @@ export function PasswordGenerator() {
               </button>
               <button
                 type="button"
-                className="h-12 rounded-xl border border-zinc-200 bg-white px-6 text-base font-semibold text-zinc-900 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:border-zinc-800 dark:bg-black dark:text-zinc-50 dark:hover:bg-zinc-900 dark:focus:ring-zinc-600 dark:focus:ring-offset-black"
+                className={[
+                  "h-12 rounded-xl border border-zinc-200 bg-white px-6 text-base font-semibold text-zinc-900 shadow-sm",
+                  pressableBase,
+                  "hover:bg-zinc-50 hover:shadow-md active:shadow-sm",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 dark:focus-visible:ring-zinc-600 dark:focus-visible:ring-offset-black",
+                  "dark:border-zinc-800 dark:bg-black dark:text-zinc-50 dark:hover:bg-zinc-900",
+                ].join(" ")}
                 onClick={regenerate}
               >
                 刷新密码
