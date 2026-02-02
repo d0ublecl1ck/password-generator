@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Hash, Lightbulb, Shuffle } from "lucide-react";
 import {
+  DEFAULT_RANDOM_PASSWORD_LENGTH,
   generateMemorablePassword,
   generatePin,
   generateRandomPassword,
@@ -170,7 +171,9 @@ async function copyToClipboard(text: string) {
 export function PasswordGenerator() {
   const [mode, setMode] = useState<Mode>("random");
 
-  const [randomLength, setRandomLength] = useState(8);
+  const [randomLength, setRandomLength] = useState(
+    DEFAULT_RANDOM_PASSWORD_LENGTH,
+  );
   const [useNumbers, setUseNumbers] = useState(true);
   const [useSymbols, setUseSymbols] = useState(false);
 

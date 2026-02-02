@@ -28,6 +28,12 @@ test("generateRandomPassword respects length and sets", () => {
   assert.match(out, /[!@#$%^&*()\-_=+\[\]{};:,.<>\/?~]/);
 });
 
+test("generateRandomPassword defaults length to 20", () => {
+  const rnd = makeSeqRandomInt([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  const out = generateRandomPassword({ numbers: true, symbols: true }, rnd);
+  assert.equal(out.length, 20);
+});
+
 test("generateMemorablePassword supports word count and toggles", () => {
   const rnd = makeSeqRandomInt([0, 1, 2, 3, 0, 1, 2, 3]);
   const wordlist = [

@@ -26,16 +26,19 @@ function shuffle<T>(items: T[], randomInt: RandomInt): T[] {
 }
 
 export type RandomPasswordOptions = {
-  length: number; // 8-100
+  length?: number; // 8-100
   numbers: boolean;
   symbols: boolean;
 };
+
+export const DEFAULT_RANDOM_PASSWORD_LENGTH = 20;
 
 export function generateRandomPassword(
   options: RandomPasswordOptions,
   randomInt: RandomInt = defaultRandomInt,
 ) {
-  const length = clampInt(options.length, 8, 100);
+  const requestedLength = options.length ?? DEFAULT_RANDOM_PASSWORD_LENGTH;
+  const length = clampInt(requestedLength, 8, 100);
 
   const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const digits = "0123456789";
@@ -109,4 +112,3 @@ export function generatePin(
   }
   return out;
 }
-
