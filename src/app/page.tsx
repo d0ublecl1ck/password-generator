@@ -1,5 +1,6 @@
 import { PasswordGeneratorClient } from "./_components/PasswordGeneratorClient";
 import { absoluteUrl } from "@/lib/site";
+import Link from "next/link";
 
 export default function Home() {
   const jsonLd = {
@@ -43,6 +44,17 @@ export default function Home() {
             <li>PIN 建议避免生日、重复数字等容易猜到的组合。</li>
           </ul>
         </section>
+
+        <footer className="mx-auto mt-12 max-w-xl border-t border-zinc-200 pt-6 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
+          <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <Link className="underline underline-offset-4" href="/about">
+              关于
+            </Link>
+            <Link className="underline underline-offset-4" href="/privacy">
+              隐私政策
+            </Link>
+          </nav>
+        </footer>
       </main>
     </div>
   );
