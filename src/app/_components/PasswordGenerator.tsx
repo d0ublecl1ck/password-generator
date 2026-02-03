@@ -232,8 +232,8 @@ export function PasswordGenerator() {
 
   return (
     <>
-      <div className="w-full max-w-xl rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-black">
-        <div className="space-y-6">
+      <div className="w-full rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-black">
+        <div className="space-y-5">
           <div className="space-y-3">
             <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
               选择密码类型
@@ -292,7 +292,7 @@ export function PasswordGenerator() {
             </h3>
             <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800" />
 
-            <div className="rounded-xl border border-zinc-200 bg-white px-6 py-8 text-center dark:border-zinc-800 dark:bg-black">
+            <div className="rounded-xl border border-zinc-200 bg-white px-6 py-6 text-center dark:border-zinc-800 dark:bg-black">
               <div
                 className={[
                   "mx-auto max-w-full break-words font-mono text-xl font-semibold tracking-wide",
